@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const sauce = require('./models/sauces');
+const sauces = require('./models/sauces');
 
 const app = express();
 
@@ -23,9 +24,10 @@ app.use((req, res, next) => {
     next();
 });
 
+// Création nouvel objet
 app.post('/api/sauce', (req, res, next) => {
     delete req.body._id;
-    const sauce = new sauce({
+    const sauce = new Sauce({
         ...req.body
     });
     sauce.save()
@@ -33,38 +35,30 @@ app.post('/api/sauce', (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 });
 
+// Modification objet
+app.put('/api/sauce/:id', (req, res, next) => {
+    Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Object modified !'}))
+    .catch(error => res.status(400).json({ error }));
+});
+
+// Suppression objet
+app.delete('/api/sauce/:id', (req, res, next) => {
+    Sauce.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Object suppressed !'}))
+    .catch(error => res.status(400).json({ error }));
+});
+
+app.get('/api/sauce/:id', (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+    .then(sauce => res.status(200).json(sauce))
+    .catch(error => res.status(404).json({ error }));
+});
+
 app.get('/api/sauce', (req, res, next) => {
-    const sauce = [
-        {
-            _id: 'sdfsdf',
-            name: 'Ma sauce 01',
-            manufacturer: 'Le sauceur',
-            description: 'La bonne sauce',
-            mainPepper: 'Piments',
-            imageUrl: '',
-            heat: 8,
-            likes: 10,
-            dislikes: 3,
-            userLiked: 10,
-            userDisliked: 3,
-            userId: 'oihjqdfio',
-        },
-        {
-            _id: 'qsdqsd',
-            name: 'Ma sauce 02',
-            manufacturer: 'El sosado',
-            description: 'La sosado del rei',
-            mainPepper: 'Piments',
-            imageUrl: '',
-            heat: 10,
-            likes: 21,
-            dislikes: 6,
-            userLiked: 21,
-            userDisliked: 6,
-            userId: 'hjkyhg',
-        },
-    ];
-    res.status(200).json(sauce);
+    Sauce.find()
+    .then(sauces => res.status(200).json(sauces))
+    .catch(error => res.status(400).json({ error }));
 });
 
 module.exports = app;
