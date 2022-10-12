@@ -1,21 +1,22 @@
 const express = require('express');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 const saucesCtrl = require('../controllers/sauces');
 
 // Création nouvel objet
-router.post('/', saucesCtrl.createSauce);
+router.post('/', auth, saucesCtrl.createSauce);
 
 // Modification objet
-router.put('/:id', saucesCtrl.modifySauce);
+router.put('/:id', auth, saucesCtrl.modifySauce);
 
 // Suppression objet
-router.delete('/:id', saucesCtrl.deleteSauce);
+router.delete('/:id', auth, saucesCtrl.deleteSauce);
 
 // Récupère un objet
-router.get('/:id', saucesCtrl.getOneSauce);
+router.get('/:id', auth, saucesCtrl.getOneSauce);
 
 // Récupère tous les objets
-router.get('/', saucesCtrl.getAllSauces);
+router.get('/', auth, saucesCtrl.getAllSauces);
 
 module.exports = router;
