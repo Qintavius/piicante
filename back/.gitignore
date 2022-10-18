@@ -1,5 +1,2 @@
 # Ignore le dossier node_modules
 node_modules
-
-# Ignore le contenue du dossier images
-images/*
