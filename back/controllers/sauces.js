@@ -1,9 +1,11 @@
+const auth = require('../middleware/auth');
 const Sauce = require('../models/Sauce');
+const fs = require('fs');
 
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
-    delete sauceObject.userId;
+    delete sauceObject._userId;
 
     const sauceLike = {
         likes: 0,
@@ -47,9 +49,20 @@ exports.modifySauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
-    Sauce.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Object suppressed !'}))
-    .catch(error => res.status(400).json({ error }));
+    Sauce.findOne({ _id: req.params.id })
+    .then(sauce => {
+        if(sauce.userId != req.auth.userId) {
+            res.status(401).json({ message: 'Unauthorized' });
+        } else {
+            const filename = sauce.imageUrl.split('/images/')[1];
+            fs.unlink('images/${filename}', () => {
+                Sauce.deleteOne({ _id: req.params.id })
+                    .then(() => { res.status(200).json({ message: 'Object suppressed' })})
+                    .catch(error => res.status(401).json({ error }));
+            });
+        }
+    })
+    .catch(error => res.status(500).json({ error }));
 };
 
 exports.getOneSauce = (req, res, next) => {
