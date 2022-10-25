@@ -1,26 +1,34 @@
+// Import module http
 const http = require('http');
+// Import fichier app.js
 const app = require('./app');
 
 //----------------------------------
 // Normalisation de port
 //----------------------------------
+/* La fonction renvoie un port valide */
 const normalizePort = val => {
+    /* convertit la valeur en nombre entier */ 
     const port = parseInt(val, 10);
-
+    /* si pas un nombre retourne la valeur */ 
     if(isNaN(port)) {
         return val;
     }
+    /* si port >= 0 retourne port */
     if(port >= 0) {
         return port;
     }
     return false;
 };
+/* définie le port */
 const port = normalizePort(process.env.PORT || '3000');
+/* ordonne à express d'utiliser le port définie */
 app.set('port', port);
 
 //----------------------------------
 // Gestion d'erreur
 //----------------------------------
+/* recherche les erreurs */
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -30,8 +38,10 @@ const errorHandler = error => {
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges.');
+      /* met fin au processus avec échec*/
       process.exit(1);
       break;
+      /* addresse recherchée en cours d'utilisation */
     case 'EADDRINUSE':
       console.error(bind + ' is already in use.');
       process.exit(1);
@@ -41,8 +51,12 @@ const errorHandler = error => {
   }
 };
 
+//----------------------------------
+// Serveur
+//----------------------------------
+/* argument pour créer serveur */
 const server = http.createServer(app);
-
+/* si serveur en erreur appelle de la fonction de gestion d'erreurs */
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
