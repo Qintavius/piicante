@@ -1,3 +1,6 @@
+//------------------------------------------
+// Importation des modules 
+//------------------------------------------
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -6,6 +9,10 @@ const path = require('path');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes= require('./routes/user');
 
+
+//------------------------------------------
+// CORS (partage de ressources entre origines multiples)
+//------------------------------------------
 mongoose.connect('mongodb+srv://user-01-test:gafhHIXv9mDwpsrK@cluster0.te7xzeo.mongodb.net/?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
