@@ -13,5 +13,3 @@
 * * *
 Lien vers le dépot du front-end: https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6.git
 ***
-L'arborence à été organisée comme ceci:
-![diagramme_directory_piicante.svg](:/33cb1b7681914890becd289c1341a055)
