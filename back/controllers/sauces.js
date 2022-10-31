@@ -1,7 +1,16 @@
+/* Appel du middleware d'authentification */
 const auth = require('../middleware/auth');
+
+/* Appel du model sauce */
 const Sauce = require('../models/Sauce');
+
+/* Appel de fs (File System) pour aller dans l'explorateur de fichiers */
 const fs = require('fs');
 
+
+//--------------------------------------------
+// Création Sauce
+//--------------------------------------------
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
@@ -26,6 +35,9 @@ exports.createSauce = (req, res, next) => {
     .catch(error => { res.status(400).json( {error} )});
 };
 
+//--------------------------------------------
+// Modification Sauce
+//--------------------------------------------
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -48,6 +60,9 @@ exports.modifySauce = (req, res, next) => {
     });
 };
 
+//--------------------------------------------
+// Suppression Sauce
+//--------------------------------------------
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -77,6 +92,9 @@ exports.getAllSauces = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+//--------------------------------------------
+// Logique LIKE / DISLIKE
+//--------------------------------------------
 exports.likeSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {

@@ -1,6 +1,7 @@
-// Import module http
+// Les projets Node sont initialisés avec 'npm init'
+// Import module http de node
 const http = require('http');
-// Import fichier app.js
+// Import fichier de l'appilcation
 const app = require('./app');
 
 //----------------------------------
@@ -38,8 +39,9 @@ const errorHandler = error => {
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges.');
-      /* met fin au processus avec échec*/
+      /* met fin au processus avec échec */
       process.exit(1);
+      /* Stop la propagation */
       break;
       /* addresse recherchée en cours d'utilisation */
     case 'EADDRINUSE':

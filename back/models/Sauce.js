@@ -1,5 +1,8 @@
+/* Package Mongoose pour création du schéma */
 const mongoose = require('mongoose');
 
+/* Création du schéma contenant les champs pour les sauces */
+/* L'id de la sauce est automatiquement généré par mongoose */
 const sauceSchema = mongoose.Schema({
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },
